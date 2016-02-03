@@ -25,9 +25,9 @@ int main(int argc, char** argv)
 
 	cout << "Begin generate random matrix" << endl;
 
-	cout << argc << endl;
-	for (int i=0;i<argc;++i)
-		cout << argv[i]<< endl;
+	//cout << argc << endl;
+	//for (int i=0;i<argc;++i)
+	//	cout << argv[i]<< endl;
 
 	int size;
 	if (argc > 1) 
