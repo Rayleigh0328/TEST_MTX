@@ -55,7 +55,8 @@ int main(int argc, char** argv)
 
 	ofstream fout;
 	fout.open(file_name);
-
+	
+	fout << "%%MatrixMarket matrix coordinate pattern general" << endl;
 	vector<pair<int, int> > tmp;
 	tmp.clear();
 
