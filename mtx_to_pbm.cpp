@@ -6,6 +6,8 @@
 
 #include "position.h"
 
+//#define DEBUG
+
 using namespace std;
 
 extern void convert(char* file_name, int& height, int& width, set<position>& ps);
@@ -24,7 +26,9 @@ int main(int argc, char** argv)
 
 	for (int i=1;i<argc;++i)
 	{
+		cout << "Convert " << argv[i] << " to PBM." << endl;
 		convert(argv[i], height, width, ps);
+		cout << "Output pbm." << endl;
 		output_pbm(argv[i], height, width, ps);
 	}
 }
@@ -41,24 +45,40 @@ void output_pbm(char* file_name, int height, int width, set<position>& ps)
 	fprintf(fp, "P4\n");
 	fprintf(fp, "%d %d\n", width, height);
 
+	#ifdef DEBUG
+	cout << "PS: " << endl;
+	for (set<position>::iterator it = ps.begin(); it != ps.end(); ++it)
+	{
+		cout << it->row << " " << it->col << endl;
+	}
+	cout << endl;
+	#endif
 
-	char data;
+	unsigned char data;
 	for (int i=0;i<height;++i)
+	{
 		for (int j=0;j<width;++j)
 		{
-			int num = i*width + j;
-			if (num % 8 == 0)
+			if (j % 8 == 0)
 			{
-				if (num > 0) fputc(data, fp);
-					//fout << data;
+				if (j > 0) 
+				{
+					fputc(data, fp);
+					#ifdef DEBUG
+					cout << (unsigned short)data << endl;
+					#endif
+				}
 				data = 0;
 			}
 
-			if (ps.find(position(i,j))!=ps.end()) data += 1 << (7 - num % 8);
+			if (ps.find(position(i,j))!=ps.end()) data = data | (1 << (7 - j % 8));
 		}
-	fputc(data, fp);
+		fputc(data, fp);
+		#ifdef DEBUG
+		cout << (unsigned short)data << endl;
+		#endif
+	}
 	fclose(fp);
-	//fout << data << endl;
 }
 
 void convert(char* file_name, int &height, int &width, set<position>& ps)
