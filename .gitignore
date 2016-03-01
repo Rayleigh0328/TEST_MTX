@@ -1,3 +1,7 @@
+*.mtx
 gen
 convert
 rand_mtx/
+real_mtx/JBG_OUTPUT/
+jbig_enc
+quad
